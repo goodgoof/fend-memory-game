@@ -25,6 +25,97 @@ function shuffle(array) {
     return array;
 }
 
+const cards = document.querySelectorAll('.card');
+// console.log(cards);
+//
+// for(card of cards) {
+//   card.addEventListener('click', () => {
+//     const clickTarget = event.target;
+//
+//        if(clickTarget.classList.contains('card')){
+//          card.classList.toggle('open');
+//          card.classList.toggle('show');
+//          console.log('helloe I am a card');
+//        }
+//         });
+//       }
+
+// for(card of cards) {
+//
+//   cards.addEventListener('click', () => {
+//     const clickTarget = event.target;
+//
+//     // if(clickTarget.classList.contains('card')){
+//       console.log('helloe I am a card');
+//     // }
+//     // console.log('helloe I am a card');
+//     // card.classList.add('open','show')
+//   });
+// }
+
+
+var openCards =[];
+
+function toggleCard(clickTarget) {
+  clickTarget.classList.toggle('show');
+ clickTarget.classList.toggle('open');
+}
+
+
+function addOpenCards(clickTarget) {
+    openCards.push(clickTarget);
+    console.log(openCards);
+}
+
+function cardMatch() {
+  if (openCards[0].firstElementChild.className ===
+    openCards[1].firstElementChild.className)
+    {
+    openCards[0].classList.toggle('match');
+    openCards[1].classList.toggle('match');
+    openCards = [];
+  } else {
+    console.log('no match');
+    openCards = [];
+  }
+
+}
+
+cards.forEach(function(card){
+  card.addEventListener('click',function(){
+    const clickTarget = event.target;
+
+    if(clickTarget.classList.contains('card') && openCards.length < 2){
+      toggleCard(clickTarget)
+      addOpenCards(clickTarget);
+      if (openCards.length === 2){
+        console.log('helloe here r 2 cards');
+      }
+
+    }
+  });
+})
+
+function addOpenCards(clickTarget) {
+    openCards.push(clickTarget);
+    console.log(openCards);
+}
+
+function cardMatch() {
+  if (openCards[0].firstElementChild.className ===
+    openCards[1].firstElementChild.className)
+    {
+    openCards[0].classList.toggle('match');
+    openCards[1].classList.toggle('match');
+    openCards = [];
+  } else {
+    console.log('no match');
+    openCards = [];
+  }
+
+}
+
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
