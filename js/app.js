@@ -2,6 +2,16 @@
  * Create a list that holds all of your cards
  */
 
+const shuffleCards=[
+  "fa fa-diamond","fa fa-diamond",
+  "fa fa-paper-plane-o","fa fa-paper-plane-o",
+  "fa fa-anchor","fa fa-anchor",
+  "fa fa-bolt","fa fa-bolt",
+  "fa fa-cube","fa fa-paper-cube",
+  "fa fa-leaf","fa fa-leaf",
+  "fa fa-bicycle","fa fa-bicycle",
+  "fa fa-bomb","fa fa-bomb"]
+
 
 /*
  * Display the cards on the page
@@ -21,9 +31,42 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
+
+
+//adding number of moves to the game
+
+let moves = 0;
+
+function addMove(){
+  moves++;
+  const movesText=document.querySelector('.moves');
+  movesText.innerHTML=moves;
+}
+
+//adding stars to the game depending on number of moves
+
+function score(){
+  if(moves===16 || moves===24){
+    starDisplay();
+    starDisplay();
+  }
+}
+
+function starDisplay(){
+  const stars = document.querySelectorAll('.stars li');
+  for(star of stars){
+    if(star.style.display !== 'none'){
+       star.style.display = 'none';
+       break;
+      }
+  }
+}
+
+starDisplay();
+starDisplay();
+
 
 const cards = document.querySelectorAll('.card');
 // console.log(cards);
@@ -54,42 +97,32 @@ const cards = document.querySelectorAll('.card');
 // }
 
 
-var openCards =[];
+let openCards =[];
 
 function toggleCard(clickTarget) {
   clickTarget.classList.toggle('show');
- clickTarget.classList.toggle('open');
+  clickTarget.classList.toggle('open');
 }
 
 
-function addOpenCards(clickTarget) {
-    openCards.push(clickTarget);
-    console.log(openCards);
-}
 
-function cardMatch() {
-  if (openCards[0].firstElementChild.className ===
-    openCards[1].firstElementChild.className)
-    {
-    openCards[0].classList.toggle('match');
-    openCards[1].classList.toggle('match');
-    openCards = [];
-  } else {
-    console.log('no match');
-    openCards = [];
-  }
-
-}
 
 cards.forEach(function(card){
+
   card.addEventListener('click',function(){
     const clickTarget = event.target;
 
-    if(clickTarget.classList.contains('card') && openCards.length < 2){
+    if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
+     && openCards.length < 2
+     && !openCards.includes(clickTarget)){
       toggleCard(clickTarget)
       addOpenCards(clickTarget);
+
       if (openCards.length === 2){
         console.log('helloe here r 2 cards');
+        cardMatch();
+        addMove();
+        score();
       }
 
     }
@@ -102,15 +135,23 @@ function addOpenCards(clickTarget) {
 }
 
 function cardMatch() {
-  if (openCards[0].firstElementChild.className ===
-    openCards[1].firstElementChild.className)
+  if (
+    openCards[0].firstElementChild.className ===
+    openCards[1].firstElementChild.className
+  )
     {
+      console.log('match')
     openCards[0].classList.toggle('match');
     openCards[1].classList.toggle('match');
     openCards = [];
   } else {
     console.log('no match');
-    openCards = [];
+    setTimeout(() => {
+      toggleCard(openCards[0]);
+      toggleCard(openCards[1]);
+      openCards = [];
+    }, 1000);
+
   }
 
 }
