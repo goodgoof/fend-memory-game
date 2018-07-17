@@ -34,10 +34,18 @@ function shuffle(array) {
     return array;
 }
 
-
-//adding number of moves to the game
+//global variables
 
 let moves = 0;
+let time = 0;
+let clockOff = true;
+let openCards =[];
+let clockId;
+const cards = document.querySelectorAll('.card');
+const minutes = Math.floor(time/60);
+const seconds = time % 60;
+
+//adding number of moves to the game
 
 function addMove(){
   moves++;
@@ -67,51 +75,53 @@ function starDisplay(){
 starDisplay();
 starDisplay();
 
+//setting clock functionality
 
-const cards = document.querySelectorAll('.card');
-// console.log(cards);
-//
-// for(card of cards) {
-//   card.addEventListener('click', () => {
-//     const clickTarget = event.target;
-//
-//        if(clickTarget.classList.contains('card')){
-//          card.classList.toggle('open');
-//          card.classList.toggle('show');
-//          console.log('helloe I am a card');
-//        }
-//         });
-//       }
+  function startClock(){
+    clockId = setInterval(() => {
+      time++;
+      displayTime();
+      }, 10000);
+  }
 
-// for(card of cards) {
-//
-//   cards.addEventListener('click', () => {
-//     const clickTarget = event.target;
-//
-//     // if(clickTarget.classList.contains('card')){
-//       console.log('helloe I am a card');
-//     // }
-//     // console.log('helloe I am a card');
-//     // card.classList.add('open','show')
-//   });
-// }
+//startClock();
 
+  function displayTime(){
+    const clock = document.querySelector('span.clock');
+    if(seconds < 10){
+      clock.innerHTML =`${minutes}:0${seconds}`;
+    } else {
+      clock.innerHTML =`${minutes}:${seconds}`;
+    }
+    console.log(clock);
+    clock.innerHTML = time;
+  }
 
-let openCards =[];
+displayTime();
+
+function stopClock() {
+  clearInterval(clockId);
+}
 
 function toggleCard(clickTarget) {
   clickTarget.classList.toggle('show');
   clickTarget.classList.toggle('open');
 }
 
-
-
-
 cards.forEach(function(card){
 
   card.addEventListener('click',function(){
     const clickTarget = event.target;
+    let isClickValid = true;
 
+    if(isClickValid){
+      if(clockOff){
+        startClock();
+        //clockOff = false;
+      } else if(isClickValid=false){
+        stopClock();
+      }
+    }
     if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
      && openCards.length < 2
      && !openCards.includes(clickTarget)){
@@ -156,7 +166,35 @@ function cardMatch() {
 
 }
 
+document.querySelector('.restart').addEventListener('click',resetGame);
 
+document.querySelector('.modal_replay').addEventListener('click',resetGame);
+
+function resetGame(){
+  resetClockAndTime();
+  resetMoves();
+  resetStars();
+}
+
+function resetClockAndTime(){
+  stopClock();
+  clockOff = true;
+  time =0;
+  displayTime();
+}
+
+function resetMoves(){
+  moves =0;
+  document.querySelector('.moves').innerHTML=moves;
+}
+
+function resetStars(){
+  stars =0;
+  const starList = document.querySelectorAll('.stars li');
+  for (star of starList){
+    star.style.display = 'inline';
+  }
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
