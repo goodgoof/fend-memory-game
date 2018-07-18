@@ -115,6 +115,9 @@ h1 {
   font-size: 2rem;
 }
 
+.hide {
+  display: none;
+}
 
 .modal_stats {
   display: flex;

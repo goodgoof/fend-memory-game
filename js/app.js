@@ -7,7 +7,7 @@ const shuffleCards=[
   "fa fa-paper-plane-o","fa fa-paper-plane-o",
   "fa fa-anchor","fa fa-anchor",
   "fa fa-bolt","fa fa-bolt",
-  "fa fa-cube","fa fa-paper-cube",
+  "fa fa-cube","fa fa-cube",
   "fa fa-leaf","fa fa-leaf",
   "fa fa-bicycle","fa fa-bicycle",
   "fa fa-bomb","fa fa-bomb"]
@@ -34,16 +34,18 @@ function shuffle(array) {
     return array;
 }
 
+const newCard= shuffle(shuffleCards);
 //global variables
 
 let moves = 0;
 let time = 0;
 let clockOff = true;
 let openCards =[];
-let clockId;
+let clockId = null;
 const cards = document.querySelectorAll('.card');
-const minutes = Math.floor(time/60);
-const seconds = time % 60;
+let matchCard = [];
+// let minutes = Math.floor(time/60);
+// let seconds = time % 60;
 
 //adding number of moves to the game
 
@@ -56,48 +58,59 @@ function addMove(){
 //adding stars to the game depending on number of moves
 
 function score(){
-  if(moves===16 || moves===24){
+  if(moves===2 || moves===4 || moves===8){
     starDisplay();
-    starDisplay();
+    //starDisplay();
   }
 }
+removeAllStar();
 
+function removeAllStar(){
+  const stars = document.querySelectorAll('.stars li');
+  for(star of stars){
+    star.style.display = 'none';
+  }
+
+}
 function starDisplay(){
   const stars = document.querySelectorAll('.stars li');
   for(star of stars){
-    if(star.style.display !== 'none'){
-       star.style.display = 'none';
+    if(star.style.display === 'none'){
+       star.style.display = 'block';
        break;
       }
   }
 }
 
-starDisplay();
-starDisplay();
+// starDisplay();
+// starDisplay();
 
 //setting clock functionality
 
   function startClock(){
     clockId = setInterval(() => {
-      time++;
+      ++time;
       displayTime();
-      }, 10000);
+      }, 1000);
   }
 
 //startClock();
 
   function displayTime(){
     const clock = document.querySelector('span.clock');
+    let minutes = Math.floor(time/60);
+    let seconds = time % 60;
+
     if(seconds < 10){
       clock.innerHTML =`${minutes}:0${seconds}`;
     } else {
       clock.innerHTML =`${minutes}:${seconds}`;
     }
-    console.log(clock);
-    clock.innerHTML = time;
+    // console.log(clock);
+    // clock.innerHTML = time;
   }
 
-displayTime();
+//displayTime();
 
 function stopClock() {
   clearInterval(clockId);
@@ -108,19 +121,22 @@ function toggleCard(clickTarget) {
   clickTarget.classList.toggle('open');
 }
 
-cards.forEach(function(card){
-
+cards.forEach(function(card,index,array){
+  card.className = "card";
+  card.firstElementChild.className = newCard[index];
   card.addEventListener('click',function(){
+    console.log(openCards.length);
     const clickTarget = event.target;
     let isClickValid = true;
 
     if(isClickValid){
       if(clockOff){
         startClock();
-        //clockOff = false;
-      } else if(isClickValid=false){
-        stopClock();
+        clockOff = false;
       }
+      // } else if(isClickValid=false){
+      //   stopClock();
+      // }
     }
     if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
      && openCards.length < 2
@@ -133,6 +149,9 @@ cards.forEach(function(card){
         cardMatch();
         addMove();
         score();
+        if(matchCard.length===16){
+          stopClock();
+        }
       }
 
     }
@@ -153,6 +172,8 @@ function cardMatch() {
       console.log('match')
     openCards[0].classList.toggle('match');
     openCards[1].classList.toggle('match');
+    matchCard.push(openCards[0]);
+    matchCard.push(openCards[1]);
     openCards = [];
   } else {
     console.log('no match');
@@ -174,6 +195,7 @@ function resetGame(){
   resetClockAndTime();
   resetMoves();
   resetStars();
+  toggleModal()
 }
 
 function resetClockAndTime(){
@@ -196,6 +218,13 @@ function resetStars(){
   }
 }
 
+function toggleModal(){
+  const modal = document.querySelector('.modal_background');
+  modal.classList.toggle('.hide');
+}
+
+toggleModal();
+toggleModal();
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
