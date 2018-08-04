@@ -44,6 +44,8 @@ let openCards =[];
 let clockId = null;
 const cards = document.querySelectorAll('.card');
 let matchCard = [];
+let matched = 0;
+const TOTAL_PAIRS = 8;
 // let minutes = Math.floor(time/60);
 // let seconds = time % 60;
 
@@ -63,7 +65,7 @@ function score(){
     //starDisplay();
   }
 }
-removeAllStar();
+//removeAllStar();
 
 function removeAllStar(){
   const stars = document.querySelectorAll('.stars li');
@@ -76,17 +78,13 @@ function starDisplay(){
   const stars = document.querySelectorAll('.stars li');
   for(star of stars){
     if(star.style.display === 'none'){
-       star.style.display = 'block';
+       star.style.display = 'inline-block';
        break;
       }
   }
 }
 
-// starDisplay();
-// starDisplay();
-
 //setting clock functionality
-
   function startClock(){
     clockId = setInterval(() => {
       ++time;
@@ -95,7 +93,6 @@ function starDisplay(){
   }
 
 //startClock();
-
   function displayTime(){
     const clock = document.querySelector('span.clock');
     let minutes = Math.floor(time/60);
@@ -106,8 +103,6 @@ function starDisplay(){
     } else {
       clock.innerHTML =`${minutes}:${seconds}`;
     }
-    // console.log(clock);
-    // clock.innerHTML = time;
   }
 
 //displayTime();
@@ -134,9 +129,6 @@ cards.forEach(function(card,index,array){
         startClock();
         clockOff = false;
       }
-      // } else if(isClickValid=false){
-      //   stopClock();
-      // }
     }
     if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
      && openCards.length < 2
@@ -151,6 +143,8 @@ cards.forEach(function(card,index,array){
         score();
         if(matchCard.length===16){
           stopClock();
+          toggleModal();
+          writeModalData();
         }
       }
 
@@ -183,6 +177,10 @@ function cardMatch() {
       openCards = [];
     }, 1000);
 
+//    else {matched++;
+//   if(matched === TOTAL_PAIRS){
+//     gameOver();
+// }
   }
 
 }
@@ -191,11 +189,31 @@ document.querySelector('.restart').addEventListener('click',resetGame);
 
 document.querySelector('.modal_replay').addEventListener('click',resetGame);
 
+document.querySelector('.modal_cancel').addEventListener('click', () => {
+  //console.log('toggle off/on');
+  toggleModal();
+  //toggleModal();
+});
+
+document.querySelector('.modal_replay').addEventListener('click', () => {
+  console.log('replay');
+  replayGame();
+});
+
 function resetGame(){
   resetClockAndTime();
   resetMoves();
   resetStars();
-  toggleModal()
+  shuffle(shuffleCards);
+  //toggleModal();
+  resetCards();
+}
+
+function resetCards(){
+  const cards = document.querySelectorAll('.deck li');
+  for (let card of cards) {
+    card.className = 'card';
+  }
 }
 
 function resetClockAndTime(){
@@ -218,13 +236,63 @@ function resetStars(){
   }
 }
 
-function toggleModal(){
-  const modal = document.querySelector('.modal_background');
-  modal.classList.toggle('.hide');
+function gameOver(){
+  ++matched;
+  if(matchCard === TOTAL_PAIRS){
+    stopClock();
+    toggleModal();
+    writeModalData();
+
+}
 }
 
-toggleModal();
-toggleModal();
+function replayGame(){
+  resetGame();
+  toggleModal();
+}
+
+function toggleModal(){
+  const modal = document.querySelector('.modal_background');
+  modal.classList.toggle('hide');
+}
+
+toggleModal(); //open modal
+toggleModal(); //close modal
+function writeModalData() {
+  const timeData = document.querySelector('.modal_time');
+  const clockTime = document.querySelector('.clock').innerHTML;
+  const movesData = document.querySelector('.modal_moves');
+  const starsData = document.querySelector('.modal_stars');
+  const stars = getStars();
+
+  timeData.innerHTML = `Time = ${clockTime}`;
+  movesData.innerHTML = `Moves = ${moves}`;
+  starsData.innerHTML = `Stars = ${stars}`;
+}
+
+function getStars() {
+  stars = document.querySelectorAll('.stars li');
+  starCount = 0;
+  for(star of stars) {
+    if(star.style.display !=='none'){
+      starCount++;
+    }
+  }
+  console.log(starCount); //2
+  return starCount;
+}
+
+//Modal modal_stars
+// time = 51;
+// displayTime(); // 0:51
+// moves = 16;
+// score(); //
+
+//writeModalData(); //write stats to modal
+//toggleModal(); //open modal
+
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
