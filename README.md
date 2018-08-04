@@ -22,6 +22,6 @@ If you have a more innovative way of doing this game and want to make some chang
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 
-##Licence
+## Licence
 
 This product is licenced to Sharma Inc.
