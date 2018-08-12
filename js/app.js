@@ -46,8 +46,6 @@ const cards = document.querySelectorAll('.card');
 let matchCard = [];
 let matched = 0;
 const TOTAL_PAIRS = 8;
-// let minutes = Math.floor(time/60);
-// let seconds = time % 60;
 
 //adding number of moves to the game
 
@@ -60,27 +58,38 @@ function addMove(){
 //adding stars to the game depending on number of moves
 
 function score(){
-  if(moves===2 || moves===4 || moves===8){
+  if(moves===1){
     starDisplay();
-    //starDisplay();
   }
+
+  if(matchCard.length===10){
+    starDisplay();
+
+  }
+    if(matchCard.length===16){
+      starDisplay();
+      starDisplay();
+    }
+
 }
-//removeAllStar();
 
 function removeAllStar(){
   const stars = document.querySelectorAll('.stars li');
   for(star of stars){
     star.style.display = 'none';
   }
-
 }
+
+removeAllStar();
+
 function starDisplay(){
   const stars = document.querySelectorAll('.stars li');
+
   for(star of stars){
     if(star.style.display === 'none'){
        star.style.display = 'inline-block';
        break;
-      }
+     }
   }
 }
 
@@ -177,10 +186,6 @@ function cardMatch() {
       openCards = [];
     }, 1000);
 
-//    else {matched++;
-//   if(matched === TOTAL_PAIRS){
-//     gameOver();
-// }
   }
 
 }
@@ -190,9 +195,7 @@ document.querySelector('.restart').addEventListener('click',resetGame);
 document.querySelector('.modal_replay').addEventListener('click',resetGame);
 
 document.querySelector('.modal_cancel').addEventListener('click', () => {
-  //console.log('toggle off/on');
   toggleModal();
-  //toggleModal();
 });
 
 document.querySelector('.modal_replay').addEventListener('click', () => {
@@ -201,12 +204,18 @@ document.querySelector('.modal_replay').addEventListener('click', () => {
 });
 
 function resetGame(){
+  removeAllStar();
   resetClockAndTime();
   resetMoves();
-  resetStars();
+  //resetStars();
+  cards.forEach(function(card,index,array){
+    card.className = "card";
+    card.firstElementChild.className = newCard[index];
+
+  })
   shuffle(shuffleCards);
-  //toggleModal();
   resetCards();
+
 }
 
 function resetCards(){
@@ -242,8 +251,7 @@ function gameOver(){
     stopClock();
     toggleModal();
     writeModalData();
-
-}
+   }
 }
 
 function replayGame(){
@@ -282,14 +290,7 @@ function getStars() {
   return starCount;
 }
 
-//Modal modal_stars
-// time = 51;
-// displayTime(); // 0:51
-// moves = 16;
-// score(); //
-
-//writeModalData(); //write stats to modal
-//toggleModal(); //open modal
+shuffle(shuffleCards);
 
 
 
