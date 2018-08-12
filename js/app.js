@@ -101,7 +101,7 @@ function starDisplay(){
       }, 1000);
   }
 
-//startClock();
+//displayTime();
   function displayTime(){
     const clock = document.querySelector('span.clock');
     let minutes = Math.floor(time/60);
@@ -114,8 +114,7 @@ function starDisplay(){
     }
   }
 
-//displayTime();
-
+  //stopClock(); when the game ends
 function stopClock() {
   clearInterval(clockId);
 }
@@ -125,41 +124,6 @@ function toggleCard(clickTarget) {
   clickTarget.classList.toggle('open');
 }
 
-cards.forEach(function(card,index,array){
-  card.className = "card";
-  card.firstElementChild.className = newCard[index];
-  card.addEventListener('click',function(){
-    console.log(openCards.length);
-    const clickTarget = event.target;
-    let isClickValid = true;
-
-    if(isClickValid){
-      if(clockOff){
-        startClock();
-        clockOff = false;
-      }
-    }
-    if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
-     && openCards.length < 2
-     && !openCards.includes(clickTarget)){
-      toggleCard(clickTarget)
-      addOpenCards(clickTarget);
-
-      if (openCards.length === 2){
-        console.log('helloe here r 2 cards');
-        cardMatch();
-        addMove();
-        score();
-        if(matchCard.length===16){
-          stopClock();
-          toggleModal();
-          writeModalData();
-        }
-      }
-
-    }
-  });
-})
 
 function addOpenCards(clickTarget) {
     openCards.push(clickTarget);
@@ -292,6 +256,41 @@ function getStars() {
 
 shuffle(shuffleCards);
 
+cards.forEach(function(card,index,array){
+  card.className = "card";
+  card.firstElementChild.className = newCard[index];
+  card.addEventListener('click',function(){
+    console.log(openCards.length);
+    const clickTarget = event.target;
+    let isClickValid = true;
+
+    if(isClickValid){
+      if(clockOff){
+        startClock();
+        clockOff = false;
+      }
+    }
+    if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
+     && openCards.length < 2
+     && !openCards.includes(clickTarget)){
+      toggleCard(clickTarget)
+      addOpenCards(clickTarget);
+
+      if (openCards.length === 2){
+        console.log('helloe here r 2 cards');
+        cardMatch();
+        addMove();
+        score();
+        if(matchCard.length===16){
+          stopClock();
+          toggleModal();
+          writeModalData();
+        }
+      }
+
+    }
+  });
+})
 
 
 /*
