@@ -24,4 +24,4 @@ For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licence
 
-This product is licenced to Sharma Inc.
+This product is licenced to Sharma Inc.The product could be built with help from online resources like w3schools.com, Mozilla Developer Network, Matthew Cranford's walthroughs and Mike's youtube video. Also Lip Permana helped me understand clock functionality and card shuffle.
