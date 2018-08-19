@@ -58,7 +58,7 @@ function addMove(){
 //adding stars to the game depending on number of moves
 
 function score(){
-  if(moves===5 || moves===6){
+  if(moves===6 || moves===7){
     removeAllStar();
     starDisplay();
     starDisplay();

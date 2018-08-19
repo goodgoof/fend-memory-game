@@ -202,7 +202,7 @@ button.modal_replay{
     margin: 40px;
   }
 }
-@media screen and (min-width: 1025px) and (max-width: 1440px){
+/* @media screen and (min-width: 1025px) and (max-width: 1440px){
   .deck {
     width: 1058px;
     min-height:1109px;
@@ -227,7 +227,7 @@ button.modal_replay{
     font-size: 30px;
     margin: 20px;
   }
-}
+} */
 
 @media screen and (min-width: 320px) and (max-width: 425px){
   .deck {
