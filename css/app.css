@@ -51,6 +51,7 @@ h1 {
     margin: 0 0 3em;
 }
 
+
 .deck .card {
     height: 125px;
     width: 125px;
@@ -176,4 +177,83 @@ button.modal_replay{
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+@media screen and (max-width: 450px){
+
+  .deck {
+    width: 400px;
+    min-height:500px;
+    padding: -3px;
+  }
+
+  .deck .card {
+      height: 72px;
+      width: 72px;
+    }
+}
+
+@media screen and (min-width: 451px) and (max-width: 1024px){
+  .score-panel {
+    font-size: 25px;
+  }
+
+  h1 {
+    margin: 40px;
+  }
+}
+@media screen and (min-width: 1025px) and (max-width: 1440px){
+  .deck {
+    width: 1058px;
+    min-height:1109px;
+    padding: 43px;
+  }
+
+  .deck .card {
+      height: 215px;
+      width: 215px;
+  }
+
+    h1 {
+      font-size: 3em;
+      margin: 80px;
+  }
+
+  .stars li {
+    font-size: 30px;
+  }
+
+  .score-panel {
+    font-size: 30px;
+    margin: 20px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 425px){
+  .deck {
+    width: 300px;
+    min-height:350px;
+    padding: 10px;
+  }
+
+  .deck .card {
+      height: 65px;
+      width: 65px;
+  }
+
+    h1 {
+      font-size: 1.5em;
+      margin: 40px;
+  }
+
+  .score-panel {
+    text-align: center;
+  }
+  .score-panel .stars{
+    margin-left: 30px;
+  }
+
+  i.fa.fa-repeat {
+    margin-right: 70px;
+  }
 }

@@ -58,19 +58,16 @@ function addMove(){
 //adding stars to the game depending on number of moves
 
 function score(){
-  if(moves===1){
+  if(moves===5 || moves===6){
+    removeAllStar();
+    starDisplay();
     starDisplay();
   }
 
-  if(matchCard.length===10){
+  if(moves>=9){
+    removeAllStar();
     starDisplay();
-
   }
-    if(matchCard.length===16){
-      starDisplay();
-      starDisplay();
-    }
-
 }
 
 function removeAllStar(){
@@ -80,7 +77,7 @@ function removeAllStar(){
   }
 }
 
-removeAllStar();
+//removeAllStar();
 
 function starDisplay(){
   const stars = document.querySelectorAll('.stars li');
@@ -154,6 +151,43 @@ function cardMatch() {
 
 }
 
+cards.forEach(function(card,index,array){
+  card.className = "card";
+  card.firstElementChild.className = newCard[index];
+  card.addEventListener('click',function(){
+    console.log(openCards.length);
+    const clickTarget = event.target;
+    let isClickValid = true;
+
+    if(isClickValid){
+      if(clockOff){
+        startClock();
+        clockOff = false;
+      }
+    }
+    if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
+     && openCards.length < 2
+     && !openCards.includes(clickTarget)){
+      toggleCard(clickTarget)
+      addOpenCards(clickTarget);
+
+      if (openCards.length === 2){
+        console.log('helloe here r 2 cards');
+        cardMatch();
+        addMove();
+        score();
+        if(matchCard.length===16){
+          stopClock();
+          toggleModal();
+          writeModalData();
+        }
+      }
+
+    }
+  });
+})
+
+
 document.querySelector('.restart').addEventListener('click',resetGame);
 
 document.querySelector('.modal_replay').addEventListener('click',resetGame);
@@ -165,19 +199,22 @@ document.querySelector('.modal_cancel').addEventListener('click', () => {
 document.querySelector('.modal_replay').addEventListener('click', () => {
   console.log('replay');
   replayGame();
+  matchCard = [];
+
 });
 
 function resetGame(){
   removeAllStar();
   resetClockAndTime();
   resetMoves();
-  //resetStars();
+  resetStars();
   cards.forEach(function(card,index,array){
     card.className = "card";
     card.firstElementChild.className = newCard[index];
 
   })
   shuffle(shuffleCards);
+  //toggleModal();
   resetCards();
 
 }
@@ -255,43 +292,6 @@ function getStars() {
 }
 
 shuffle(shuffleCards);
-
-cards.forEach(function(card,index,array){
-  card.className = "card";
-  card.firstElementChild.className = newCard[index];
-  card.addEventListener('click',function(){
-    console.log(openCards.length);
-    const clickTarget = event.target;
-    let isClickValid = true;
-
-    if(isClickValid){
-      if(clockOff){
-        startClock();
-        clockOff = false;
-      }
-    }
-    if(clickTarget.classList.contains('card') && !clickTarget.classList.contains('match')
-     && openCards.length < 2
-     && !openCards.includes(clickTarget)){
-      toggleCard(clickTarget)
-      addOpenCards(clickTarget);
-
-      if (openCards.length === 2){
-        console.log('helloe here r 2 cards');
-        cardMatch();
-        addMove();
-        score();
-        if(matchCard.length===16){
-          stopClock();
-          toggleModal();
-          writeModalData();
-        }
-      }
-
-    }
-  });
-})
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
