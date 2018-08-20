@@ -199,7 +199,7 @@ document.querySelector('.modal_cancel').addEventListener('click', () => {
 document.querySelector('.modal_replay').addEventListener('click', () => {
   console.log('replay');
   replayGame();
-  matchCard = [];
+//  matchCard = [];
 
 });
 
@@ -213,6 +213,8 @@ function resetGame(){
     card.firstElementChild.className = newCard[index];
 
   })
+  matchCard = [];
+  openCards = [];
   shuffle(shuffleCards);
   //toggleModal();
   resetCards();
